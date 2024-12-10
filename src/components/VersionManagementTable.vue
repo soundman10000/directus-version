@@ -1,6 +1,6 @@
 <template>
-  <div class="table-responsive">
-    <table class="table table-striped table-hover table-bordered">
+  <div>
+    <table class="table table-striped table-bordered">
       <thead class="bg-primary text-white">
         <tr>
           <th scope="col">Name</th>
@@ -16,8 +16,8 @@
           <td>{{ item.name }}</td>
           <td>{{ item.key }}</td>
           <td>{{ formatDate(item.date_updated) }}</td>
-          <td>{{ item.delta === null ? 'None' : item.delta }}</td>
-          <td class="text-center">
+          <td class="dataColumn">{{ item.delta === null ? 'None' : item.delta }}</td>
+          <td class="text-center buttonColumn">
             <button
               v-if="item.delta !== null"
               class="btn btn-sm btn-success"
@@ -26,7 +26,7 @@
               Promote
             </button>
           </td>
-          <td class="text-center">
+          <td class="text-center buttonColumn">
             <button
               v-if="item.delta !== null"
               class="btn btn-sm btn-danger"
@@ -78,5 +78,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Add any additional styles here */
+.buttonColumn {
+  width: 100px;
+}
+.dataColumn {
+  width: 350px;
+}
 </style>
