@@ -1,8 +1,15 @@
 <template>
-  <h1>Versioned Data</h1>
-  <Loading v-if="state.loading"></Loading>
+  <h1>Data</h1>
+  <div v-if="state.loading" class="d-flex justify-content-center align-items-center loading">
+    <Loading></Loading>
+  </div>
   <div v-if="!state.loading">
-    <span>{{ data.data?.text_block_1 }}</span>
+    <div class="mb-3">
+      <label class="form-label">Text Block 1</label>
+      <span class="form-control-plaintext bg-light border rounded p-2">{{
+        data.data?.text_block_1
+      }}</span>
+    </div>
   </div>
 </template>
 
@@ -12,11 +19,12 @@ import type { AxiosInstance } from 'axios'
 import { ResponseData, State, Data } from './VersionedData.d.ts'
 import Loading from './Loading.vue'
 
-const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | undefined> => {
+const fetchVersionedData = async (
+  http: AxiosInstance,
+  guid: string,
+): Promise<ResponseData | undefined> => {
   try {
-    return await http
-      .get('/items/versioned_data/EDE514BA-0AD7-43E9-ADE9-E971A189D463')
-      .then((x) => x.data as ResponseData)
+    return await http.get(`/items/versioned_data/${guid}`).then((x) => x.data as ResponseData)
   } catch (error) {
     console.error('Error fetching data:', error)
     return undefined
@@ -40,7 +48,9 @@ export default defineComponent({
     const http = inject<AxiosInstance>('http')
 
     onBeforeMount(async () => {
-      data.data = await fetchVersionedData(http).then((z) => z.data)
+      data.data = await fetchVersionedData(http, 'EDE514BA-0AD7-43E9-ADE9-E971A189D463').then(
+        (z) => z.data,
+      )
       state.loading = false
     })
 
@@ -59,6 +69,10 @@ export default defineComponent({
 
 <style scoped>
 h1 {
+  text-align: center;
   color: var(--color-text);
+}
+.loading {
+  padding-top: 50px;
 }
 </style>

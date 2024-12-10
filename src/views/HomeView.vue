@@ -8,6 +8,7 @@ import VersionManagement from '../components/VersionManagement.vue'
     <div class="content-container">
       <VersionedData></VersionedData>
     </div>
+    <div class="divider"></div>
     <div class="version-container">
       <VersionManagement></VersionManagement>
     </div>
@@ -18,7 +19,8 @@ import VersionManagement from '../components/VersionManagement.vue'
 .main-container {
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  height: calc(100vh - var(--pad-floor) * 2);
+  overflow: hidden;
 }
 
 .content-container {
@@ -32,6 +34,12 @@ import VersionManagement from '../components/VersionManagement.vue'
   padding: 20px;
 }
 
+.divider {
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 20px;
+}
+
 @media (max-width: 768px) {
   .main-container {
     flex-direction: column;
@@ -41,6 +49,12 @@ import VersionManagement from '../components/VersionManagement.vue'
   .version-container {
     flex: none;
     width: 100%;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    margin: 20px 0;
   }
 }
 </style>
