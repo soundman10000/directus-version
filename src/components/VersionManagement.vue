@@ -4,15 +4,25 @@
     <Loading></Loading>
   </div>
   <div v-if="!state.loading">
-    <button type="button" class="btn btn-success">Success</button>
+    <VersionedDataTable :data="data.data" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onBeforeMount } from 'vue'
-import { State, Data } from './VersionManagement.d.ts'
+import { defineComponent, reactive, onBeforeMount, inject } from 'vue'
+import { VersionedDataItem, Data } from './VersionManagement.d.ts'
 import FormatHeader from './Header.vue'
 import Loading from './Loading.vue'
+import VersionedDataTable from './VersionManagementTable.vue'
+
+const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | undefined> => {
+  try {
+    return await http.get(`/versions`).then((x) => x.data as ResponseData)
+  } catch (error) {
+    console.error('Error fetching data:', error)
+    return undefined
+  }
+}
 
 const state = reactive<State>({
   loading: true,
@@ -25,10 +35,14 @@ export default defineComponent({
   components: {
     Loading,
     FormatHeader,
+    VersionedDataTable,
   },
   setup() {
-    onBeforeMount(() => {
-      // state.loading = false
+    const http = inject<AxiosInstance>('http')
+
+    onBeforeMount(async () => {
+      data.data = await fetchVersionedData(http).then((z) => z.data)
+      state.loading = false
     })
 
     return {

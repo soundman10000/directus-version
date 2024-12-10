@@ -21,10 +21,7 @@ import { ResponseData, State, Data } from './VersionedData.d.ts'
 import FormatHeader from './Header.vue'
 import Loading from './Loading.vue'
 
-const fetchVersionedData = async (
-  http: AxiosInstance,
-  guid: string,
-): Promise<ResponseData | undefined> => {
+const fetchData = async (http: AxiosInstance, guid: string): Promise<ResponseData | undefined> => {
   try {
     return await http.get(`/items/versioned_data/${guid}`).then((x) => x.data as ResponseData)
   } catch (error) {
@@ -54,7 +51,7 @@ export default defineComponent({
     const guid = route.params.guid as string
 
     onBeforeMount(async () => {
-      data.data = await fetchVersionedData(http, guid).then((z) => z.data)
+      data.data = await fetchData(http, guid).then((z) => z.data)
       state.loading = false
     })
 
