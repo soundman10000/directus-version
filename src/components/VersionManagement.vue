@@ -1,5 +1,5 @@
 <template>
-  <h1>Management</h1>
+  <FormatHeader title="Management" />
   <div v-if="state.loading" class="d-flex justify-content-center align-items-center loading">
     <Loading></Loading>
   </div>
@@ -11,6 +11,7 @@
 <script lang="ts">
 import { defineComponent, reactive, onBeforeMount } from 'vue'
 import { State, Data } from './VersionManagement.d.ts'
+import FormatHeader from './Header.vue'
 import Loading from './Loading.vue'
 
 const state = reactive<State>({
@@ -23,6 +24,7 @@ export default defineComponent({
   name: 'VersionManagement',
   components: {
     Loading,
+    FormatHeader,
   },
   setup() {
     onBeforeMount(() => {
@@ -42,6 +44,7 @@ h1 {
   text-align: center;
   color: var(--color-text);
 }
+
 .loading {
   padding-top: 50px;
 }

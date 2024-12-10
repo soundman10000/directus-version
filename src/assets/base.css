@@ -40,6 +40,10 @@
   --pad-floor: 4px;
   --pad-xs: 8px;
   --pad-sm: 16px;
+
+  --margin-floor: 4px;
+  --margin-xs: 8px;
+  --margin-sm: 16px;
 }
 
 @media (prefers-color-scheme: dark) {

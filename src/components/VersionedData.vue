@@ -1,5 +1,5 @@
 <template>
-  <h1>Data</h1>
+  <FormatHeader title="Data" />
   <div v-if="state.loading" class="d-flex justify-content-center align-items-center loading">
     <Loading></Loading>
   </div>
@@ -18,6 +18,7 @@ import { defineComponent, onBeforeMount, onMounted, onErrorCaptured, inject, rea
 import type { AxiosInstance } from 'axios'
 import { useRoute } from 'vue-router'
 import { ResponseData, State, Data } from './VersionedData.d.ts'
+import FormatHeader from './Header.vue'
 import Loading from './Loading.vue'
 
 const fetchVersionedData = async (
@@ -44,6 +45,7 @@ export default defineComponent({
   name: 'VersionedData',
   components: {
     Loading,
+    FormatHeader,
   },
   setup() {
     const http = inject<AxiosInstance>('http')
