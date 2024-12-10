@@ -1,13 +1,18 @@
 <template>
   <div>
-    <h1>{{ message }}</h1>
+    <h1>Versioned Data</h1>
+    <Loading v-if="state.loading"></Loading>
+    <div v-if="!state.loading">
+      <span>{{ data.data.text_block_1 }}</span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, onMounted, onErrorCaptured, ref, inject } from 'vue'
+import { defineComponent, onBeforeMount, onMounted, onErrorCaptured, inject, reactive } from 'vue'
 import type { AxiosInstance } from 'axios'
 import { ResponseData } from './VersionedData.d.ts'
+import Loading from './Loading.vue'
 
 const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | undefined> => {
   try {
@@ -22,13 +27,23 @@ const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | u
 
 export default defineComponent({
   name: 'VersionedData',
+  components: {
+    Loading,
+  },
   setup() {
+    const state = reactive({
+      loading: true,
+    })
+
+    const data = reactive({
+      data: null,
+    })
+
     const http = inject<AxiosInstance>('http')
-    const message = ref('Hello from Vue 3 Component!')
 
     onBeforeMount(async () => {
-      const result = await fetchVersionedData(http)
-      console.log(result)
+      data.data = await fetchVersionedData(http).then((z) => z.data)
+      state.loading = false
     })
 
     onMounted(() => {
@@ -41,7 +56,8 @@ export default defineComponent({
     })
 
     return {
-      message,
+      state: state,
+      data: data,
     }
   },
 })
@@ -49,6 +65,6 @@ export default defineComponent({
 
 <style scoped>
 h1 {
-  color: blue;
+  color: var(--color-text);
 }
 </style>
