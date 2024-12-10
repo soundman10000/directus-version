@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <h1>Versioned Data</h1>
-    <Loading v-if="state.loading"></Loading>
-    <div v-if="!state.loading">
-      <span>{{ data.data.text_block_1 }}</span>
-    </div>
+  <h1>Versioned Data</h1>
+  <Loading v-if="state.loading"></Loading>
+  <div v-if="!state.loading">
+    <span>{{ data.data?.text_block_1 }}</span>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, onMounted, onErrorCaptured, inject, reactive } from 'vue'
 import type { AxiosInstance } from 'axios'
-import { ResponseData } from './VersionedData.d.ts'
+import { ResponseData, State, Data } from './VersionedData.d.ts'
 import Loading from './Loading.vue'
 
 const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | undefined> => {
@@ -25,29 +23,25 @@ const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | u
   }
 }
 
+const state = reactive<State>({
+  loading: true,
+})
+
+const data = reactive<Data>({
+  data: null,
+})
+
 export default defineComponent({
   name: 'VersionedData',
   components: {
     Loading,
   },
   setup() {
-    const state = reactive({
-      loading: true,
-    })
-
-    const data = reactive({
-      data: null,
-    })
-
     const http = inject<AxiosInstance>('http')
 
     onBeforeMount(async () => {
       data.data = await fetchVersionedData(http).then((z) => z.data)
       state.loading = false
-    })
-
-    onMounted(() => {
-      console.log('onMounted: Component has been mounted')
     })
 
     onErrorCaptured((err: unknown, instance: ComponentPublicInstance | null, info: string) => {

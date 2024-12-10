@@ -37,6 +37,8 @@
 }
 
 :root {
+  --pad-floor: 4px;
+  --pad-xs: 8px;
   --pad-sm: 16px;
 }
 

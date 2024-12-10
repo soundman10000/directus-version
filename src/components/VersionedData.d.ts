@@ -1,3 +1,11 @@
+export interface State {
+  loading: boolean
+}
+
+export interface Data {
+  data: DataItem | null
+}
+
 type Status = 'published' | 'draft' | 'archived'
 
 interface DataItem {
