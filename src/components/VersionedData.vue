@@ -16,6 +16,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, onMounted, onErrorCaptured, inject, reactive } from 'vue'
 import type { AxiosInstance } from 'axios'
+import { useRoute } from 'vue-router'
 import { ResponseData, State, Data } from './VersionedData.d.ts'
 import Loading from './Loading.vue'
 
@@ -47,10 +48,11 @@ export default defineComponent({
   setup() {
     const http = inject<AxiosInstance>('http')
 
+    const route = useRoute()
+    const guid = route.params.guid as string
+
     onBeforeMount(async () => {
-      data.data = await fetchVersionedData(http, 'EDE514BA-0AD7-43E9-ADE9-E971A189D463').then(
-        (z) => z.data,
-      )
+      data.data = await fetchVersionedData(http, guid).then((z) => z.data)
       state.loading = false
     })
 
