@@ -6,7 +6,7 @@
           <th scope="col">Name</th>
           <th scope="col">Key</th>
           <th scope="col">Date Updated</th>
-          <th scope="col">Delta</th>
+          <th scope="col">Changes</th>
           <th scope="col"></th>
           <th scope="col"></th>
         </tr>
@@ -16,7 +16,7 @@
           <td>{{ item.name }}</td>
           <td>{{ item.key }}</td>
           <td>{{ formatDate(item.date_updated) }}</td>
-          <td class="dataColumn">{{ item.delta === null ? 'None' : item.delta }}</td>
+          <td class="dataColumn"><VersionChanges :data="item.delta" /></td>
           <td class="text-center buttonColumn">
             <button
               v-if="item.delta !== null"
@@ -44,6 +44,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { VersionedDataItem } from './VersionManagement.d.ts'
+import VersionChanges from './VersionChanges.vue'
 
 export default defineComponent({
   name: 'VersionedDataTable',
@@ -52,6 +53,9 @@ export default defineComponent({
       type: Array as PropType<VersionedDataItem[]>,
       required: true,
     },
+  },
+  components: {
+    VersionChanges,
   },
   methods: {
     edit(id: string) {

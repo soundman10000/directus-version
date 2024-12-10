@@ -41,7 +41,7 @@ export default defineComponent({
     const http = inject<AxiosInstance>('http')
 
     onBeforeMount(async () => {
-      data.data = await fetchVersionedData(http).then((z) => z.data)
+      data.data = await fetchVersionedData(http).then((z) => z.data as VersionedDataItem[])
       state.loading = false
     })
 
