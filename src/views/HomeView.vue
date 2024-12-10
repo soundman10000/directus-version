@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import VersionedData from '../components/VersionedData.vue'
+</script>
 
 <template>
-  <main>Hello</main>
+  <main><VersionedData></VersionedData></main>
 </template>
