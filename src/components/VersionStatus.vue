@@ -6,43 +6,38 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import type { Status } from './VersionManagement.d.ts'
 
 type JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }
 
 const props = defineProps({
   delta: {
-    type: Object as () => Record<string, JSONValue> | null,
-    default: null,
+    type: Object as () => Record<string, JSONValue>,
   },
 })
 
-const status = ref<'draft' | 'archived' | 'published' | 'unknown'>('unknown')
+const status = ref<Status>()
 
-if (props.delta && 'status' in props.delta && typeof props.delta.status === 'string') {
-  if (['draft', 'archived', 'published'].includes(props.delta.status)) {
-    status.value = props.delta.status as 'draft' | 'archived' | 'published'
-  }
-} else {
-  status.value = 'unknown'
-}
+status.value = props.delta?.status as Status
 
 const statusBoxClass = computed(() => ({
   'status-box': true,
   draft: status.value === 'draft',
-  archived: status.value === 'archived',
+  submitted: status.value === 'submitted',
   published: status.value === 'published',
-  unknown: status.value === 'unknown',
+  approved: status.value === 'approved',
 }))
 
 const statusText = computed(() => {
   switch (status.value) {
     case 'draft':
       return 'Draft'
-    case 'archived':
-      return 'Archived'
+    case 'submitted':
+      return 'Submitted'
+    case 'approved':
+      return 'Approved'
     case 'published':
       return 'Published'
-    case 'unknown':
     default:
       return 'Unknown'
   }
@@ -52,21 +47,28 @@ const statusText = computed(() => {
 <style scoped>
 .status-box {
   padding: var(--pad-floor);
-  border-radius: 5px;
+  border-radius: 0;
   text-align: center;
   color: white;
+  background: none;
+  border: none;
+  box-shadow: none;
+  cursor: default;
 }
-
 .draft {
-  background-color: #007bff;
+  background-color: #2c2c2c;
 }
 
-.archived {
-  background-color: #6c757d;
+.submitted {
+  background-color: #ffc107;
+}
+
+.approved {
+  background-color: #28a745;
 }
 
 .published {
-  background-color: #28a745;
+  background-color: #007bff;
 }
 
 .unknown {

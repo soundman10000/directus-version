@@ -19,8 +19,8 @@ export default defineComponent({
   name: 'VersionChanges',
   props: {
     data: {
-      type: Object as PropType<GenericData | null>,
-      required: false,
+      type: Object as () => Record<string, JSONValue> | null,
+      required: true,
     },
   },
   computed: {

@@ -15,12 +15,16 @@
         <tr v-for="item in data" :key="item.id">
           <td>{{ item.collection }}</td>
           <td>{{ formatDate(item.date_updated) }}</td>
-          <td class="dataColumn"><VersionChanges :data="item.delta" /></td>
-          <td><VersionStatus :delta="item.delta" /></td>
-          <td class="text-center buttonColumn">
-            <PromoteChange :id="item.id" :hash="item.hash" :delta="item.delta" />
+          <td class="dataColumn">
+            <VersionChanges :data="item.delta as Record<string, JSONValue>" />
           </td>
-          <td class="text-center buttonColumn">
+          <td class="align-middle">
+            <VersionStatus :delta="item.delta as Record<string, JSONValue>" />
+          </td>
+          <td class="text-center buttonColumn align-middle">
+            <PromoteChange :data="item" />
+          </td>
+          <td class="text-center buttonColumn align-middle">
             <button
               v-if="item.delta !== null"
               class="btn btn-sm btn-danger"
@@ -41,6 +45,7 @@ import type { VersionedDataItem } from './VersionManagement.d.ts'
 import VersionChanges from './VersionChanges.vue'
 import PromoteChange from './PromoteChange.vue'
 import VersionStatus from './VersionStatus.vue'
+import type { JSONValue } from './VersionChanges.ts'
 
 export default defineComponent({
   name: 'VersionedDataTable',
