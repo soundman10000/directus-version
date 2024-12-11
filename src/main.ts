@@ -14,6 +14,16 @@ const http = axios.create({
   timeout: 10000,
 })
 
+http.interceptors.request.use(
+  (config) => {
+    config.headers['Authorization'] = `Bearer swfrJC2iTqlIXuTOy12AlwRJZTa6SDuo`
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
+
 app.provide('http', http)
 
 app.use(router)
