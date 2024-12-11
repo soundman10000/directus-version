@@ -6,6 +6,7 @@
           <th scope="col">Collection</th>
           <th scope="col">Updated</th>
           <th scope="col">Changes</th>
+          <th scope="col">Status</th>
           <th scope="col"></th>
           <th scope="col"></th>
         </tr>
@@ -15,13 +16,9 @@
           <td>{{ item.collection }}</td>
           <td>{{ formatDate(item.date_updated) }}</td>
           <td class="dataColumn"><VersionChanges :data="item.delta" /></td>
+          <td><VersionStatus :delta="item.delta" /></td>
           <td class="text-center buttonColumn">
-            <PromoteChange
-              :id="item.item"
-              :versionKey="item.key"
-              :collection="item.collection"
-              :delta="item.delta"
-            />
+            <PromoteChange :id="item.id" :hash="item.hash" :delta="item.delta" />
           </td>
           <td class="text-center buttonColumn">
             <button
@@ -43,6 +40,7 @@ import { defineComponent, type PropType } from 'vue'
 import type { VersionedDataItem } from './VersionManagement.d.ts'
 import VersionChanges from './VersionChanges.vue'
 import PromoteChange from './PromoteChange.vue'
+import VersionStatus from './VersionStatus.vue'
 
 export default defineComponent({
   name: 'VersionedDataTable',
@@ -55,6 +53,7 @@ export default defineComponent({
   components: {
     VersionChanges,
     PromoteChange,
+    VersionStatus,
   },
   methods: {
     deleteItem(id: string) {

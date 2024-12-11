@@ -66,7 +66,7 @@ export default defineComponent({
       state.loading = false
     })
 
-    onErrorCaptured((err: unknown, instance: ComponentPublicInstance | null, info: string) => {
+    onErrorCaptured((err: unknown, _instance: ComponentPublicInstance | null, info: string) => {
       console.log('errorCaptured: an error has been captured', err, info)
       return false
     })

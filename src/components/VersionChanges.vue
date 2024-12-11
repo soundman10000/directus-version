@@ -1,6 +1,6 @@
 <template>
   <div class="card-body">
-    <div v-for="(value, key) in data" :key="key" class="mb-2">
+    <div v-for="(value, key) in filteredData" :key="key" class="mb-2">
       <div class="data-item rounded">
         <div class="data-label small-text text-muted">{{ key }}</div>
         <div class="data-value small-text">{{ formatValue(value) }}</div>
@@ -21,6 +21,18 @@ export default defineComponent({
     data: {
       type: Object as PropType<GenericData | null>,
       required: false,
+    },
+  },
+  computed: {
+    filteredData() {
+      if (!this.data) return {}
+      const result: GenericData = {}
+      for (const [key, value] of Object.entries(this.data)) {
+        if (key !== 'status') {
+          result[key] = value
+        }
+      }
+      return result
     },
   },
   methods: {

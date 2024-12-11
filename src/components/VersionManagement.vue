@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, onBeforeMount, inject } from 'vue'
-import type { VersionedDataItem, Data, State } from './VersionManagement.d.ts'
+import type { VersionedDataItem } from './VersionManagement.d.ts'
 import FormatHeader from './Header.vue'
 import Loading from './Loading.vue'
 import VersionedDataTable from './VersionManagementTable.vue'
@@ -26,9 +26,18 @@ const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | u
   }
 }
 
+interface State {
+  loading: boolean
+}
+
 const state = reactive<State>({
   loading: true,
 })
+
+interface Data {
+  data: VersionedDataItem[]
+  fields: string[]
+}
 
 const data = reactive<Data>({
   data: [],

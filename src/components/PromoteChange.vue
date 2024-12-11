@@ -9,15 +9,11 @@ import { type AxiosInstance } from 'axios'
 type JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }
 
 const props = defineProps({
-  versionKey: {
-    type: String,
-    required: true,
-  },
   id: {
     type: String,
     required: true,
   },
-  collection: {
+  hash: {
     type: String,
     required: true,
   },
@@ -41,7 +37,8 @@ const promote = () => {
   }
 
   axios
-    .patch(`/items/${props.collection}/${props.id}?version=${props.versionKey}&action=promote`, {
+    .patch(`/versions/${props.id}/promote`, {
+      mainHash: props.hash,
       fields: deltaKeys.value,
     })
     .then((response) => {
