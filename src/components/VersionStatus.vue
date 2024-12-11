@@ -16,10 +16,8 @@ const props = defineProps({
   },
 })
 
-// Define possible statuses
 const status = ref<'draft' | 'archived' | 'published' | 'unknown'>('unknown')
 
-// Check if delta has a status and set it accordingly
 if (props.delta && 'status' in props.delta && typeof props.delta.status === 'string') {
   if (['draft', 'archived', 'published'].includes(props.delta.status)) {
     status.value = props.delta.status as 'draft' | 'archived' | 'published'
@@ -28,7 +26,6 @@ if (props.delta && 'status' in props.delta && typeof props.delta.status === 'str
   status.value = 'unknown'
 }
 
-// Computed property for the class of the status box
 const statusBoxClass = computed(() => ({
   'status-box': true,
   draft: status.value === 'draft',
