@@ -1,7 +1,7 @@
 <template>
   <div class="card-body">
     <div v-for="(value, key) in data" :key="key" class="mb-2">
-      <div class="data-item border border-secondary rounded p-2">
+      <div class="data-item rounded">
         <div class="data-label small-text text-muted">{{ key }}</div>
         <div class="data-value small-text">{{ formatValue(value) }}</div>
       </div>
@@ -10,12 +10,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-
-type JSONPrimitive = string | number | boolean | null
-type JSONValue = JSONPrimitive | JSONObject | JSONArray
-type JSONArray = Array<JSONValue>
-type JSONObject = { [key: string]: JSONValue }
+import { defineComponent, type PropType } from 'vue'
+import { formatValue, type JSONValue } from './VersionChanges.ts'
 
 type GenericData = Record<string, JSONValue>
 
@@ -23,25 +19,12 @@ export default defineComponent({
   name: 'VersionChanges',
   props: {
     data: {
-      type: Object as PropType<GenericData>,
-      required: true,
+      type: Object as PropType<GenericData | null>,
+      required: false,
     },
   },
   methods: {
-    formatValue(value: JSONValue): string {
-      if (typeof value === 'object') {
-        if (value === null) {
-          return 'null'
-        } else if (Array.isArray(value)) {
-          return `[${value.map((v) => this.formatValue(v)).join(', ')}]`
-        } else {
-          return `{${Object.entries(value)
-            .map(([k, v]) => `${k}: ${this.formatValue(v)}`)
-            .join(', ')}}`
-        }
-      }
-      return String(value)
-    },
+    formatValue,
   },
 })
 </script>
@@ -52,17 +35,20 @@ export default defineComponent({
 }
 
 .data-item {
-  border-width: 1px;
+  border: solid 1px var(--color-background);
 }
 
 .data-label {
-  background: #f8f9fa; /* Light background for the label */
-  padding: 2px 4px;
-  border-bottom: 1px solid #e9ecef;
+  background: var(--color-background);
+  color: var(--color-heading) !important;
+  padding: var(--pad-floor);
+  font-weight: 600;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .data-value {
-  padding: 4px;
-  word-wrap: break-word; /* Allows long text to wrap */
+  padding: var(--pad-floor);
+  word-wrap: break-word;
 }
 </style>

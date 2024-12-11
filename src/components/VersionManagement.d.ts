@@ -18,4 +18,5 @@ type VersionedDataItem = {
 
 export interface Data {
   data: VersionedDataItem[]
+  fields: string[]
 }

@@ -10,10 +10,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, onBeforeMount, inject } from 'vue'
-import { VersionedDataItem, Data } from './VersionManagement.d.ts'
+import type { VersionedDataItem, Data, State } from './VersionManagement.d.ts'
 import FormatHeader from './Header.vue'
 import Loading from './Loading.vue'
 import VersionedDataTable from './VersionManagementTable.vue'
+import type { AxiosInstance } from 'axios'
+import type { ResponseData } from './VersionedData'
 
 const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | undefined> => {
   try {
@@ -28,7 +30,10 @@ const state = reactive<State>({
   loading: true,
 })
 
-const data = reactive<Data>({})
+const data = reactive<Data>({
+  data: [],
+  fields: [],
+})
 
 export default defineComponent({
   name: 'VersionManagement',
@@ -41,7 +46,12 @@ export default defineComponent({
     const http = inject<AxiosInstance>('http')
 
     onBeforeMount(async () => {
-      data.data = await fetchVersionedData(http).then((z) => z.data as VersionedDataItem[])
+      if (!http) {
+        return
+      }
+      data.data = await fetchVersionedData(http).then(
+        (z) => z?.data as unknown as VersionedDataItem[],
+      )
       state.loading = false
     })
 

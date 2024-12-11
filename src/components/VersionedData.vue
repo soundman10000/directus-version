@@ -14,10 +14,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, onMounted, onErrorCaptured, inject, reactive } from 'vue'
+import {
+  defineComponent,
+  onBeforeMount,
+  onErrorCaptured,
+  inject,
+  reactive,
+  type ComponentPublicInstance,
+} from 'vue'
 import type { AxiosInstance } from 'axios'
 import { useRoute } from 'vue-router'
-import { ResponseData, State, Data } from './VersionedData.d.ts'
+import type { ResponseData, State, Data } from './VersionedData.d.ts'
 import FormatHeader from './Header.vue'
 import Loading from './Loading.vue'
 
@@ -51,7 +58,11 @@ export default defineComponent({
     const guid = route.params.guid as string
 
     onBeforeMount(async () => {
-      data.data = await fetchData(http, guid).then((z) => z.data)
+      if (!http) {
+        return
+      }
+
+      data.data = (await fetchData(http, guid).then((z) => z?.data)) ?? null
       state.loading = false
     })
 

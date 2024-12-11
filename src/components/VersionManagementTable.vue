@@ -3,9 +3,8 @@
     <table class="table table-striped table-bordered">
       <thead class="bg-primary text-white">
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Key</th>
-          <th scope="col">Date Updated</th>
+          <th scope="col">Collection</th>
+          <th scope="col">Updated</th>
           <th scope="col">Changes</th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -13,18 +12,16 @@
       </thead>
       <tbody>
         <tr v-for="item in data" :key="item.id">
-          <td>{{ item.name }}</td>
-          <td>{{ item.key }}</td>
+          <td>{{ item.collection }}</td>
           <td>{{ formatDate(item.date_updated) }}</td>
           <td class="dataColumn"><VersionChanges :data="item.delta" /></td>
           <td class="text-center buttonColumn">
-            <button
-              v-if="item.delta !== null"
-              class="btn btn-sm btn-success"
-              @click="edit(item.id)"
-            >
-              Promote
-            </button>
+            <PromoteChange
+              :id="item.item"
+              :versionKey="item.key"
+              :collection="item.collection"
+              :delta="item.delta"
+            />
           </td>
           <td class="text-center buttonColumn">
             <button
@@ -42,9 +39,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { VersionedDataItem } from './VersionManagement.d.ts'
+import { defineComponent, type PropType } from 'vue'
+import type { VersionedDataItem } from './VersionManagement.d.ts'
 import VersionChanges from './VersionChanges.vue'
+import PromoteChange from './PromoteChange.vue'
 
 export default defineComponent({
   name: 'VersionedDataTable',
@@ -56,11 +54,9 @@ export default defineComponent({
   },
   components: {
     VersionChanges,
+    PromoteChange,
   },
   methods: {
-    edit(id: string) {
-      console.log('Edit item with ID:', id)
-    },
     deleteItem(id: string) {
       console.log('Delete item with ID:', id)
     },
@@ -72,9 +68,6 @@ export default defineComponent({
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
       })
     },
   },
