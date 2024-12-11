@@ -56,10 +56,8 @@ const approve = () => {
     return
   }
   axios
-    .patch(`/versions/${props.data.id}`, {
-      delta: {
-        status: 'approved',
-      },
+    .post(`/versions/${props.data.id}/save`, {
+      status: 'approved',
     })
     .then((response) => {
       console.log('Item promoted:', response.data)
