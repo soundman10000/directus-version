@@ -19,51 +19,42 @@ const props = defineProps({
   },
 })
 
-const axios = inject<AxiosInstance>('http')
+const axios = inject<AxiosInstance>('http')!
 
 const deltaKeys = ref<string[]>([])
 const status = ref<Status>()
 
 if (props.data.delta) {
   deltaKeys.value = Object.keys(props.data.delta).filter((key) => key !== 'status')
-
-  const deltaStatus = props.data.delta.status as Status
-  if (deltaStatus) {
-    status.value = deltaStatus
+  if (props.data.delta.status) {
+    status.value = props.data.delta.status as Status
   }
 }
 
-const promote = () => {
-  if (!axios) {
-    return
+const promote = async () => {
+  const body = {
+    mainHash: props.data.hash,
+    fields: deltaKeys.value,
   }
 
-  axios
-    .patch(`/versions/${props.data.id}/promote`, {
-      mainHash: props.data.hash,
-      fields: deltaKeys.value,
-    })
-    .then((response) => {
-      console.log('Item promoted:', response.data)
-    })
-    .catch((error) => {
-      console.error('Failed to promote item:', error)
-    })
+  try {
+    const response = await axios.patch(`/versions/${props.data.id}/promote`, body)
+    console.log('Item promoted:', response.data)
+  } catch (error) {
+    console.error('Failed to promote item:', error)
+  }
 }
 
-const approve = () => {
-  if (!axios) {
-    return
+const approve = async () => {
+  const body = {
+    status: 'approved',
   }
-  axios
-    .post(`/versions/${props.data.id}/save`, {
-      status: 'approved',
-    })
-    .then((response) => {
-      console.log('Item promoted:', response.data)
-    })
-    .catch((error) => {
-      console.error('Failed to promote item:', error)
-    })
+
+  try {
+    const response = await axios.post(`/versions/${props.data.id}/save`, body)
+    console.log('Item approved:', response.data)
+  } catch (error) {
+    console.error('Failed to approve item:', error)
+  }
 }
 </script>

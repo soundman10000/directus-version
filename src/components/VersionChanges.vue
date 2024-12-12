@@ -13,8 +13,6 @@
 import { defineComponent } from 'vue'
 import { formatValue, type JSONValue } from './VersionChanges.ts'
 
-type GenericData = Record<string, JSONValue>
-
 export default defineComponent({
   name: 'VersionChanges',
   props: {
@@ -25,13 +23,7 @@ export default defineComponent({
   },
   computed: {
     filteredData() {
-      const result: GenericData = {}
-      for (const [key, value] of Object.entries(this.data ?? [])) {
-        if (key !== 'status') {
-          result[key] = value
-        }
-      }
-      return result
+      return Object.fromEntries(Object.entries(this.data ?? {}).filter(([key]) => key !== 'status'))
     },
   },
   methods: {
