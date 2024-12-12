@@ -6,7 +6,7 @@ export interface Data {
   data: DataItem | null
 }
 
-type Status = 'published' | 'draft' | 'archived'
+export type Status = 'published' | 'draft' | 'archived' | 'submitted'
 
 interface DataItem {
   id: string

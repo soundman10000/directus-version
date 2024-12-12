@@ -17,12 +17,12 @@ import VersionedDataTable from './VersionManagementTable.vue'
 import type { AxiosInstance } from 'axios'
 import type { ResponseData } from './VersionedData'
 
-const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | undefined> => {
+const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | null> => {
   try {
-    return await http.get(`/versions`).then((x) => x.data as ResponseData)
+    return await http.get(`/versions`).then((x) => x.data)
   } catch (error) {
     console.error('Error fetching data:', error)
-    return undefined
+    return null
   }
 }
 
@@ -44,11 +44,11 @@ export default defineComponent({
   },
   setup() {
     const http = inject<AxiosInstance>('http')
+    if (!http) {
+      throw 'Http Router not found'
+    }
 
     onBeforeMount(async () => {
-      if (!http) {
-        return
-      }
       data.data = await fetchVersionedData(http).then(
         (z) => z?.data as unknown as VersionedDataItem[],
       )

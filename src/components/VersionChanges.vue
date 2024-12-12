@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
+import { defineComponent } from 'vue'
 import { formatValue, type JSONValue } from './VersionChanges.ts'
 
 type GenericData = Record<string, JSONValue>

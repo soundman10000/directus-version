@@ -28,12 +28,12 @@ import type { ResponseData, State, Data } from './VersionedData.d.ts'
 import FormatHeader from './Header.vue'
 import Loading from './Loading.vue'
 
-const fetchData = async (http: AxiosInstance, guid: string): Promise<ResponseData | undefined> => {
+const fetchData = async (http: AxiosInstance, pk: string): Promise<ResponseData | null> => {
   try {
-    return await http.get(`/items/versioned_data/${guid}`).then((x) => x.data as ResponseData)
+    return await http.get(`/items/versioned_data/${pk}`).then((x) => x.data)
   } catch (error) {
     console.error('Error fetching data:', error)
-    return undefined
+    return null
   }
 }
 
@@ -52,17 +52,16 @@ export default defineComponent({
     FormatHeader,
   },
   setup() {
-    const http = inject<AxiosInstance>('http')
-
     const route = useRoute()
     const guid = route.params.guid as string
 
-    onBeforeMount(async () => {
-      if (!http) {
-        return
-      }
+    const http = inject<AxiosInstance>('http')
+    if (!http) {
+      throw 'Http Router not found'
+    }
 
-      data.data = (await fetchData(http, guid).then((z) => z?.data)) ?? null
+    onBeforeMount(async () => {
+      data.data = await fetchData(http, guid).then((z) => z?.data ?? null)
       state.loading = false
     })
 

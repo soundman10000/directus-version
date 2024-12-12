@@ -11,25 +11,23 @@ import type { Emitter } from 'mitt'
 
 const app = createApp(App)
 
+type Event = {
+  message: string
+}
+
+const emitter: Emitter<Event> = mitt()
+
 const http = axios.create({
   baseURL: 'http://localhost:8055',
   timeout: 10000,
 })
-
-type Events = {
-  message: string
-}
-
-const emitter: Emitter<Events> = mitt()
 
 http.interceptors.request.use(
   (config) => {
     config.headers['Authorization'] = `Bearer swfrJC2iTqlIXuTOy12AlwRJZTa6SDuo`
     return config
   },
-  (error) => {
-    return Promise.reject(error)
-  },
+  (error) => Promise.reject(error),
 )
 
 app.provide('emitter', emitter)

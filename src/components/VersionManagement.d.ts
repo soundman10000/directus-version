@@ -2,11 +2,10 @@ export interface State {
   loading: boolean
 }
 
-export type Status = 'draft' | 'submitted' | 'approved' | 'published'
+export type Status = 'draft' | 'submitted' | 'approved' | 'published' | 'feedback'
 
 interface Delta {
   status?: Status
-  // Add other properties that might be in delta if any
   [key: string]: string | number | boolean | null | undefined | unknown
 }
 

@@ -27,9 +27,9 @@ const status = ref<Status>()
 if (props.data.delta) {
   deltaKeys.value = Object.keys(props.data.delta).filter((key) => key !== 'status')
 
-  const deltaStatus = props.data.delta.status as Status | undefined
+  const deltaStatus = props.data.delta.status as Status
   if (deltaStatus) {
-    status.value = deltaStatus as Status
+    status.value = deltaStatus
   }
 }
 
