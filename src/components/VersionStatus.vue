@@ -1,8 +1,17 @@
 <template>
   <div
-    :class="['alert', 'alert-dismissible', 'fade', 'show', 'text-center', 'm-0', statusBoxClass]"
+    :class="[
+      'alert',
+      'alert-dismissible',
+      'fade',
+      'show',
+      'text-center',
+      'm-0',
+      'p-2',
+      statusBoxClass,
+    ]"
   >
-    <span class="properCase">{{ status }}</span>
+    <div class="properCase">{{ status }}</div>
   </div>
 </template>
 
@@ -32,6 +41,7 @@ const statusBoxClass = computed(() => {
       return 'alert-success'
     case 'published':
       return 'alert-primary'
+    case 'denied':
     default:
       return 'alert-danger'
   }

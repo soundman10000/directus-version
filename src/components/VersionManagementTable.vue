@@ -18,7 +18,7 @@
           <td class="dataColumn">
             <VersionChanges :data="item.delta as Record<string, JSONValue>" />
           </td>
-          <td class="align-middle">
+          <td class="text-center statusColumn align-middle">
             <VersionStatus :delta="item.delta as Record<string, JSONValue>" />
           </td>
           <td class="text-center buttonColumn align-middle">
@@ -47,6 +47,12 @@ import PromoteChange from './PromoteChange.vue'
 import VersionStatus from './VersionStatus.vue'
 import type { JSONValue } from './VersionChanges.ts'
 
+const dateFormat: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+}
+
 export default defineComponent({
   name: 'VersionedDataTable',
   props: {
@@ -65,11 +71,7 @@ export default defineComponent({
       console.log('Delete item with ID:', id)
     },
     formatDate(dateString: string): string {
-      return new Date(dateString).toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      })
+      return new Date(dateString).toLocaleString('en-US', dateFormat)
     },
   },
 })
@@ -81,5 +83,8 @@ export default defineComponent({
 }
 .dataColumn {
   width: 350px;
+}
+.statusColumn {
+  max-width: 100px;
 }
 </style>

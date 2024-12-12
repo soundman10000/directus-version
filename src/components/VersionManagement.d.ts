@@ -2,7 +2,7 @@ export interface State {
   loading: boolean
 }
 
-export type Status = 'draft' | 'submitted' | 'approved' | 'published' | 'feedback'
+export type Status = 'draft' | 'submitted' | 'approved' | 'published' | 'denied'
 
 interface Delta {
   status?: Status
