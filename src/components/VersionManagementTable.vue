@@ -4,7 +4,7 @@
       <thead class="bg-primary text-white">
         <tr>
           <th scope="col">Collection</th>
-          <th scope="col">Updated</th>
+          <th scope="col" class="d-none d-md-table-cell">Updated</th>
           <th scope="col">Changes</th>
           <th scope="col">Status</th>
           <th scope="col"></th>
@@ -14,7 +14,7 @@
       <tbody>
         <tr v-for="item in data" :key="item.id">
           <td>{{ item.collection }}</td>
-          <td>{{ formatDate(item.date_updated) }}</td>
+          <td class="d-none d-md-table-cell">{{ formatDate(item.date_updated) }}</td>
           <td class="dataColumn">
             <VersionChanges :data="item.delta as Record<string, JSONValue>" />
           </td>
@@ -25,13 +25,7 @@
             <PromoteChange :data="item" />
           </td>
           <td class="text-center buttonColumn align-middle">
-            <button
-              v-if="item.delta !== null"
-              class="btn btn-sm btn-danger"
-              @click="deleteItem(item.id)"
-            >
-              Deny
-            </button>
+            <DenyChange :data="item" />
           </td>
         </tr>
       </tbody>
@@ -44,6 +38,7 @@ import { defineComponent, type PropType } from 'vue'
 import type { VersionedDataItem } from './VersionManagement.d.ts'
 import VersionChanges from './VersionChanges.vue'
 import PromoteChange from './PromoteChange.vue'
+import DenyChange from './DenyChange.vue'
 import VersionStatus from './VersionStatus.vue'
 import type { JSONValue } from './VersionChanges.ts'
 
@@ -65,6 +60,7 @@ export default defineComponent({
     VersionChanges,
     PromoteChange,
     VersionStatus,
+    DenyChange,
   },
   methods: {
     deleteItem(id: string) {
@@ -79,7 +75,7 @@ export default defineComponent({
 
 <style scoped>
 .buttonColumn {
-  width: 100px;
+  width: 75px;
 }
 .dataColumn {
   width: 350px;

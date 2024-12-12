@@ -8,14 +8,11 @@ import router from './router'
 import axios from 'axios'
 import mitt from 'mitt'
 import type { Emitter } from 'mitt'
+import type { Events } from './types/events.ts'
 
 const app = createApp(App)
 
-type Event = {
-  message: string
-}
-
-const emitter: Emitter<Event> = mitt()
+const emitter: Emitter<Events> = mitt()
 
 const http = axios.create({
   baseURL: 'http://localhost:8055',

@@ -17,6 +17,8 @@ import Loading from './Loading.vue'
 import VersionedDataTable from './VersionManagementTable.vue'
 import type { AxiosInstance } from 'axios'
 import type { ResponseData } from './VersionedData'
+import type { Emitter } from 'mitt'
+import type { Events } from '../types/events.ts'
 
 const fetchVersionedData = async (http: AxiosInstance): Promise<ResponseData | null> => {
   try {
@@ -45,12 +47,21 @@ export default defineComponent({
   },
   setup() {
     const http = inject<AxiosInstance>('http')!
+    const emitter = inject<Emitter<Events>>('emitter')!
+
+    emitter.on('event', async () => {
+      await handleFetchVersionedData()
+    })
+
+    async function handleFetchVersionedData() {
+      state.loading = true
+      const result = await fetchVersionedData(http)
+      data.data = (result?.data ?? []) as VersionedDataItem[]
+      state.loading = false
+    }
 
     onBeforeMount(async () => {
-      data.data = await fetchVersionedData(http).then(
-        (z) => z?.data as unknown as VersionedDataItem[],
-      )
-      state.loading = false
+      await handleFetchVersionedData()
     })
 
     return {

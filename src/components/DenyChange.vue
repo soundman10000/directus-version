@@ -1,9 +1,10 @@
 <template>
-  <button v-if="status === 'approved'" class="btn btn-sm btn-success" @click="promote">
-    Promote
-  </button>
-  <button v-if="status === 'submitted'" class="btn btn-sm btn-primary" @click="approve">
-    Approve
+  <button
+    v-if="status === 'submitted' || status === 'approved'"
+    class="btn btn-sm btn-danger"
+    @click="deny"
+  >
+    Deny
   </button>
 </template>
 
@@ -38,30 +39,16 @@ if (props.data.delta) {
   }
 }
 
-const promote = async () => {
+const deny = async () => {
   const body = {
-    mainHash: props.data.hash,
-    fields: deltaKeys.value,
-  }
-
-  try {
-    await axios.patch(`/versions/${props.data.id}/promote`, body)
-    publishEvent({ success: true, type: 'promote', message: 'Version promoted' })
-  } catch (error) {
-    publishEvent({ success: false, type: 'promote', message: 'Version promotion failed' })
-  }
-}
-
-const approve = async () => {
-  const body = {
-    status: 'approved',
+    status: 'denied',
   }
 
   try {
     await axios.post(`/versions/${props.data.id}/save`, body)
-    publishEvent({ success: true, type: 'approve', message: 'Version approved' })
+    publishEvent({ success: true, type: 'deny', message: 'Version denied' })
   } catch (error) {
-    publishEvent({ success: false, type: 'approve', message: 'Version approval failed' })
+    publishEvent({ success: false, type: 'deny', message: 'Version denial failed' })
   }
 }
 </script>
