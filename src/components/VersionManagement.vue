@@ -1,6 +1,7 @@
+html
 <template>
   <FormatHeader title="Management" />
-  <div v-if="state.loading" class="d-flex justify-content-center align-items-center loading">
+  <div v-if="state.loading" class="d-flex justify-content-center align-items-center mt-5">
     <Loading></Loading>
   </div>
   <div v-if="!state.loading">
@@ -43,10 +44,7 @@ export default defineComponent({
     VersionedDataTable,
   },
   setup() {
-    const http = inject<AxiosInstance>('http')
-    if (!http) {
-      throw 'Http Router not found'
-    }
+    const http = inject<AxiosInstance>('http')!
 
     onBeforeMount(async () => {
       data.data = await fetchVersionedData(http).then(
@@ -62,14 +60,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped>
-h1 {
-  text-align: center;
-  color: var(--color-text);
-}
-
-.loading {
-  padding-top: 50px;
-}
-</style>

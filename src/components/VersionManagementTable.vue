@@ -65,10 +65,7 @@ export default defineComponent({
       console.log('Delete item with ID:', id)
     },
     formatDate(dateString: string): string {
-      const date = new Date(dateString)
-      const locale = 'en-US'
-
-      return date.toLocaleString(locale, {
+      return new Date(dateString).toLocaleString('en-US', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',

@@ -1,9 +1,9 @@
 <template>
   <div class="card-body">
-    <div v-for="(value, key) in filteredData" :key="key" class="mb-2">
-      <div class="data-item rounded">
-        <div class="data-label small-text text-muted">{{ key }}</div>
-        <div class="data-value small-text">{{ formatValue(value) }}</div>
+    <div v-for="(value, key) in filteredData" :key="key">
+      <div class="card border">
+        <div class="card-header bg-secondary small p-2 font-weight-bold text-white">{{ key }}</div>
+        <div class="card-body small p-2">{{ formatValue(value) }}</div>
       </div>
     </div>
   </div>
@@ -25,9 +25,8 @@ export default defineComponent({
   },
   computed: {
     filteredData() {
-      if (!this.data) return {}
       const result: GenericData = {}
-      for (const [key, value] of Object.entries(this.data)) {
+      for (const [key, value] of Object.entries(this.data ?? [])) {
         if (key !== 'status') {
           result[key] = value
         }
@@ -40,27 +39,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped>
-.small-text {
-  font-size: 0.75rem;
-}
-
-.data-item {
-  border: solid 1px var(--color-background);
-}
-
-.data-label {
-  background: var(--color-background);
-  color: var(--color-heading) !important;
-  padding: var(--pad-floor);
-  font-weight: 600;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
-
-.data-value {
-  padding: var(--pad-floor);
-  word-wrap: break-word;
-}
-</style>

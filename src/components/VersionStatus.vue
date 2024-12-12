@@ -1,6 +1,8 @@
 <template>
-  <div :class="statusBoxClass">
-    {{ statusText }}
+  <div
+    :class="['alert', 'alert-dismissible', 'fade', 'show', 'text-center', 'm-0', statusBoxClass]"
+  >
+    <span class="properCase">{{ status }}</span>
   </div>
 </template>
 
@@ -20,58 +22,24 @@ const status = ref<Status>()
 
 status.value = props.delta?.status as Status
 
-const statusBoxClass = computed(() => ({
-  'status-box': true,
-  draft: status.value === 'draft',
-  submitted: status.value === 'submitted',
-  published: status.value === 'published',
-  approved: status.value === 'approved',
-}))
-
-const statusText = computed(() => {
+const statusBoxClass = computed(() => {
   switch (status.value) {
     case 'draft':
-      return 'Draft'
+      return 'alert-dark'
     case 'submitted':
-      return 'Submitted'
+      return 'alert-warning'
     case 'approved':
-      return 'Approved'
+      return 'alert-success'
     case 'published':
-      return 'Published'
+      return 'alert-primary'
     default:
-      return 'Unknown'
+      return 'alert-danger'
   }
 })
 </script>
 
 <style scoped>
-.status-box {
-  padding: var(--pad-floor);
-  border-radius: 0;
-  text-align: center;
-  color: white;
-  background: none;
-  border: none;
-  box-shadow: none;
-  cursor: default;
-}
-.draft {
-  background-color: #2c2c2c;
-}
-
-.submitted {
-  background-color: #ffc107;
-}
-
-.approved {
-  background-color: #28a745;
-}
-
-.published {
-  background-color: #007bff;
-}
-
-.unknown {
-  background-color: #dc3545;
+.properCase {
+  text-transform: capitalize;
 }
 </style>
