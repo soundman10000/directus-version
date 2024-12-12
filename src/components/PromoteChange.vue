@@ -27,10 +27,6 @@ const emitter = inject<Emitter<Events>>('emitter')!
 const deltaKeys = ref<string[]>([])
 const status = ref<Status>()
 
-const publishEvent = (eventData: Event) => {
-  emitter.emit('event', eventData)
-}
-
 if (props.data.delta) {
   deltaKeys.value = Object.keys(props.data.delta).filter((key) => key !== 'status')
   if (props.data.delta.status) {
@@ -47,9 +43,9 @@ const promote = async () => {
   try {
     await axios.post(`/versions/${props.data.id}/promote`, body)
     await axios.delete(`/versions/${props.data.id}`)
-    publishEvent({ success: true, type: 'promote', message: 'Version promoted' })
+    emitter.emit('event', { success: true, type: 'promote', message: 'Version promoted' })
   } catch (error) {
-    publishEvent({ success: false, type: 'promote', message: 'Version promotion failed' })
+    emitter.emit('event', { success: false, type: 'promote', message: 'Version promotion failed' })
   }
 }
 
@@ -60,9 +56,9 @@ const approve = async () => {
 
   try {
     await axios.post(`/versions/${props.data.id}/save`, body)
-    publishEvent({ success: true, type: 'approve', message: 'Version approved' })
+    emitter.emit('event', { success: true, type: 'approve', message: 'Version approved' })
   } catch (error) {
-    publishEvent({ success: false, type: 'approve', message: 'Version approval failed' })
+    emitter.emit('event', { success: false, type: 'approve', message: 'Version approval failed' })
   }
 }
 </script>
