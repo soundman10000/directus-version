@@ -45,7 +45,8 @@ const promote = async () => {
   }
 
   try {
-    await axios.patch(`/versions/${props.data.id}/promote`, body)
+    await axios.post(`/versions/${props.data.id}/promote`, body)
+    await axios.delete(`/versions/${props.data.id}`)
     publishEvent({ success: true, type: 'promote', message: 'Version promoted' })
   } catch (error) {
     publishEvent({ success: false, type: 'promote', message: 'Version promotion failed' })

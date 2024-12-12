@@ -12,7 +12,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in data" :key="item.id">
+        <tr v-if="data.length === 0">
+          <td :colspan="6" class="text-center">No Versions</td>
+        </tr>
+        <tr v-else v-for="item in data" :key="item.id">
           <td>{{ item.collection }}</td>
           <td class="d-none d-md-table-cell">{{ formatDate(item.date_updated) }}</td>
           <td class="dataColumn">
@@ -32,7 +35,6 @@
     </table>
   </div>
 </template>
-
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 import type { VersionedDataItem } from './VersionManagement.d.ts'
